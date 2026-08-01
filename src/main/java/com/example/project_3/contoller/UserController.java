@@ -4,10 +4,12 @@ import com.example.project_3.dto.request.UserRequestDTO;
 import com.example.project_3.dto.response.UserResponseDTO;
 import com.example.project_3.dto.update.UserUpdateDTO;
 import com.example.project_3.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,17 +17,18 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor
+@Validated
 public class UserController {
     private final UserService userService;
 
 
     @PostMapping
-    public UserResponseDTO createUser(@RequestBody UserRequestDTO dto){
+    public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO dto){
         return userService.createUser(dto);
     }
 
     @PatchMapping("/{id}")
-    public UserResponseDTO updateUser(@RequestBody UserUpdateDTO dto, @PathVariable Long id){
+    public UserResponseDTO updateUser(@Valid @RequestBody UserUpdateDTO dto, @PathVariable Long id){
         return userService.updateUser(dto, id);
     }
 

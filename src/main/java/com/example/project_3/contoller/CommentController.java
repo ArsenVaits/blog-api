@@ -4,20 +4,23 @@ import com.example.project_3.dto.request.CommentRequestDTO;
 import com.example.project_3.dto.response.CommentResponseDTO;
 import com.example.project_3.dto.update.CommentUpdateDTO;
 import com.example.project_3.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/comments")
+@Validated
 public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/users/{userId}/posts/{postId}")
-    public CommentResponseDTO createComment(@RequestBody CommentRequestDTO dto, @PathVariable Long userId, @PathVariable Long postId){
+    public CommentResponseDTO createComment(@Valid @RequestBody CommentRequestDTO dto, @PathVariable Long userId, @PathVariable Long postId){
         return commentService.createComment(dto,userId,postId);
     }
 
@@ -27,7 +30,7 @@ public class CommentController {
     }
 
     @PatchMapping("/{id}")
-    public CommentResponseDTO updateComment(@RequestBody CommentUpdateDTO dto, @PathVariable Long id){
+    public CommentResponseDTO updateComment(@Valid @RequestBody CommentUpdateDTO dto, @PathVariable Long id){
         return commentService.updateCommentById(dto, id);
     }
 
