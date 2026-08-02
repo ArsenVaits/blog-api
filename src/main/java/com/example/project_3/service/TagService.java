@@ -12,10 +12,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class TagService {
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
@@ -49,7 +51,7 @@ public class TagService {
     }
 
     //READ
-
+    @Transactional(readOnly = true)
     public TagResponseDTO findTagById(Long id){
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("Тег с таким Id не был найден!"));
@@ -57,7 +59,7 @@ public class TagService {
     }
 
 
-
+    @Transactional(readOnly = true)
     public Page<TagResponseDTO> getTagsByPostId(Long postId, Pageable pageable){
 
         return tagRepository.findTagsByPostListId(postId, pageable).map(tagMapper::toResponseDTO);

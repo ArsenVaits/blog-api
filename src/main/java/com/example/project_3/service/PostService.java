@@ -17,11 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class PostService {
     private final PostRepository postRepository;
     private final PostMapper postMapper;
@@ -61,6 +63,7 @@ public class PostService {
     }
 
     //Read
+    @Transactional(readOnly = true)
     public PostResponseDTO findPostById(Long id){
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Пост с таким id не был найден"));
@@ -68,12 +71,13 @@ public class PostService {
         return postMapper.toResponseDTO(post);
     }
 
-
+    @Transactional(readOnly = true)
     public Page<PostResponseDTO>  findPostsByTagId(Long tagId, Pageable pageable){
         return postRepository.findPostsByTagListId(tagId, pageable)
                 .map(postMapper::toResponseDTO);
     }
 
+    @Transactional(readOnly = true)
     public Page<PostResponseDTO> findPostsByUserId(Long userId, Pageable pageable){
         return postRepository.findPostsByUserId(userId, pageable)
                 .map(postMapper::toResponseDTO);

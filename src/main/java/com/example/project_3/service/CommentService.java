@@ -18,9 +18,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class CommentService {
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
@@ -65,12 +67,14 @@ public class CommentService {
     }
 
     //Read
+    @Transactional(readOnly = true)
     public CommentResponseDTO findCommentById(Long id){
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Комментарий с таким id не найден!"));
         return commentMapper.toResponseDTO(comment);
     }
 
+    @Transactional(readOnly = true)
     public Page<CommentResponseDTO> findCommentsByPostId(Long postId, Pageable pageable){
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Пост с таким id не был найден!"));
