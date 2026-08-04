@@ -79,6 +79,11 @@ public class PostService {
 
     @Transactional(readOnly = true)
     public Page<PostResponseDTO> findPostsByUserId(Long userId, Pageable pageable){
+
+        StringBuilder s = new StringBuilder("ssdf");
+        s.deleteCharAt(1);
+
+
         return postRepository.findPostsByUserId(userId, pageable)
                 .map(postMapper::toResponseDTO);
     }
