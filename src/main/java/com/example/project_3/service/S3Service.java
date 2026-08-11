@@ -19,9 +19,9 @@ public class S3Service {
     @Value("${aws.bucket-name}")
     private String bucketName;
 
-/
+
     public String uploadFile(MultipartFile file) {
-        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename().replace(" ", "_");
 
         try {
             s3Client.putObject(
@@ -36,6 +36,11 @@ public class S3Service {
             throw new RuntimeException("Ошибка загрузки файла: " + e.getMessage());
         }
 
-        return "https://" + bucketName + ".s3." + "eu-north-1" + ".amazonaws.com/" + fileName;
+        return s3Client.utilities()
+                .getUrl(builder -> builder
+                        .bucket(bucketName)
+                        .key(fileName))
+                .toExternalForm();
+
     }
 }

@@ -2,15 +2,9 @@ package com.example.project_3.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
-@Getter
-@Setter
-public class TagRequestDTO {
+public record TagRequestDTO (
     @NotBlank(message = "Тег не может быть пуст!")
     @Size(min = 1, max = 255, message = "Размер тега должен быть от 1 до 255 символов!")
-    private String content;
-
-
-}
+    String name
+){}

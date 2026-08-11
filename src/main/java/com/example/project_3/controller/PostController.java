@@ -1,14 +1,16 @@
-package com.example.project_3.contoller;
+package com.example.project_3.controller;
 
 import com.example.project_3.dto.request.PostRequestDTO;
 import com.example.project_3.dto.response.PostResponseDTO;
 import com.example.project_3.dto.update.PostUpdateDTO;
+import com.example.project_3.entity.User;
 import com.example.project_3.service.PostService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +23,19 @@ public class PostController {
 
 
     @PostMapping
-    public PostResponseDTO createPost(@Valid @RequestBody PostRequestDTO dto, @RequestParam Long userId){
-        return postService.createPost(dto, userId);
+    public ResponseEntity<PostResponseDTO> createPost(@Valid @RequestBody PostRequestDTO dto, @AuthenticationPrincipal User currentUser){
+        return ResponseEntity.ok(postService.createPost(dto, currentUser));
     }
 
     @PatchMapping("/{id}")
-    public PostResponseDTO updatePostById(@Valid @RequestBody PostUpdateDTO dto, @PathVariable Long id){
-        return postService.updatePostById(dto,id);
+    public ResponseEntity<PostResponseDTO> updatePostById(@Valid @RequestBody PostUpdateDTO dto, @PathVariable Long id, @AuthenticationPrincipal User currentUser){
+        return ResponseEntity.ok(postService.updatePostById(dto,id,currentUser));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePostById(@PathVariable Long id){
-        return postService.deletePostById(id);
+    public ResponseEntity<Void> deletePostById(@PathVariable Long id, @AuthenticationPrincipal User currentUser){
+        postService.deletePostById(id, currentUser);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
@@ -41,13 +44,13 @@ public class PostController {
     }
 
 
-    @GetMapping("/tags/{tagId}")
+    @GetMapping("/by-tags/{tagId}")
     public Page<PostResponseDTO> findPostsByTagId(@PathVariable Long tagId, Pageable pageable){
         return postService.findPostsByTagId(tagId,pageable);
     }
 
 
-    @GetMapping("/users/{userId}")
+    @GetMapping("/by-users/{userId}")
     public Page<PostResponseDTO> findPostsByUserId(@PathVariable Long userId, Pageable pageable){
         return postService.findPostsByUserId(userId, pageable);
     }

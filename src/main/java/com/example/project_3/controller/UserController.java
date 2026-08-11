@@ -1,14 +1,15 @@
-package com.example.project_3.contoller;
+package com.example.project_3.controller;
 
-import com.example.project_3.dto.request.UserRequestDTO;
 import com.example.project_3.dto.response.UserResponseDTO;
 import com.example.project_3.dto.update.UserUpdateDTO;
+import com.example.project_3.entity.User;
 import com.example.project_3.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +23,18 @@ public class UserController {
     private final UserService userService;
 
 
-    @PostMapping
-    public UserResponseDTO createUser(@Valid @RequestBody UserRequestDTO dto){
-        return userService.createUser(dto);
+    @PatchMapping
+    public UserResponseDTO updateUser(@Valid @RequestBody UserUpdateDTO dto, @AuthenticationPrincipal User currentUser){
+        return userService.updateUser(dto, currentUser);
     }
 
-    @PatchMapping("/{id}")
-    public UserResponseDTO updateUser(@Valid @RequestBody UserUpdateDTO dto, @PathVariable Long id){
-        return userService.updateUser(dto, id);
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUserById(@AuthenticationPrincipal User currentUser){
+        userService.deleteCurrentUser(currentUser);
+        return ResponseEntity.noContent().build();
     }
+
 
     @GetMapping("/list")
     public List<UserResponseDTO> getListUsers(){
@@ -40,12 +44,6 @@ public class UserController {
     @GetMapping("/page")
     public Page<UserResponseDTO> getPageUsers(Pageable pageable){
         return userService.getPageUser(pageable);
-    }
-
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUserById(@PathVariable Long id){
-        return userService.deleteUserById(id);
     }
 
     @GetMapping("/{id}")

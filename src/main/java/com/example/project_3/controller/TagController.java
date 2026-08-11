@@ -1,4 +1,4 @@
-package com.example.project_3.contoller;
+package com.example.project_3.controller;
 
 import com.example.project_3.dto.request.TagRequestDTO;
 import com.example.project_3.dto.response.TagResponseDTO;
@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,15 +23,17 @@ public class TagController {
 
 
     @PostMapping
-    public TagResponseDTO createTag(@Valid  @RequestBody TagRequestDTO dto){
+    public TagResponseDTO createTag(@Valid @RequestBody TagRequestDTO dto){
         return tagService.createTag(dto);
     }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTagById(@PathVariable Long id){
-        return tagService.deleteTagById(id);
+        tagService.deleteTagById(id);
+        return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
     public TagResponseDTO updateTagById(@Valid @RequestBody TagUpdateDTO dto, @PathVariable Long id){
         return tagService.updateTagById(dto, id);
@@ -41,7 +44,7 @@ public class TagController {
         return tagService.findTagById(id);
     }
 
-    @GetMapping("/posts/{postId}")
+    @GetMapping("/by-posts/{postId}")
     public Page<TagResponseDTO> getTagsByPostId(@PathVariable Long postId, Pageable pageable){
         return tagService.getTagsByPostId(postId, pageable);
     }

@@ -4,13 +4,13 @@ import com.example.project_3.dto.request.TagRequestDTO;
 import com.example.project_3.dto.response.TagResponseDTO;
 import com.example.project_3.dto.update.TagUpdateDTO;
 import com.example.project_3.entity.Tag;
+import com.example.project_3.exception.TagAlreadyExistsException;
 import com.example.project_3.exception.TagNotFoundException;
 import com.example.project_3.mapper.TagMapper;
 import com.example.project_3.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +25,9 @@ public class TagService {
     //CREATE
 
     public TagResponseDTO createTag(TagRequestDTO dto){
+        if(tagRepository.existsByName(dto.name())){
+            throw new TagAlreadyExistsException("Тег уже существует!");
+        }
         Tag tag = tagRepository.save(tagMapper.toEntity(dto));
         return tagMapper.toResponseDTO(tag);
     }
@@ -32,16 +35,13 @@ public class TagService {
 
     //DELETE
 
-    public ResponseEntity<Void> deleteTagById(Long id){
+    public void deleteTagById(Long id){
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("Тег с таким Id не был найден!"));
-
         tagRepository.delete(tag);
-        return ResponseEntity.noContent().build();
     }
 
     //UPDATE
-
 
     public TagResponseDTO updateTagById(TagUpdateDTO dto, Long id){
         Tag tag = tagRepository.findById(id)

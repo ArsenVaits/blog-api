@@ -10,5 +10,5 @@ import lombok.Setter;
 public class TagUpdateDTO {
     @NotBlank(message = "Тег не может быть пустым!")
     @Size(min = 1, max = 255, message = "Размер тега должен быть от 1 до 255 знаков!")
-    private String content;
+    private String name;
 }

@@ -9,7 +9,7 @@ import java.util.List;
 @Setter
 public class TagResponseDTO {
     private Long id;
-    private String content;
+    private String name;
 
 
 }

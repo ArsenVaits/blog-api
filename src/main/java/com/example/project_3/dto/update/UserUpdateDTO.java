@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 public class UserUpdateDTO {
     @Size(min = 3, max = 55, message = "Имя должно быть от 3  до 55 символов символов")
-    private String name;
+    private String username;
     @Email(message = "Email имеет неверный формат!")
     private String email;
 
