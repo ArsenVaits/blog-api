@@ -12,6 +12,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -31,12 +32,12 @@ public class AuthService {
         user.setEmail(dto.email());
 
         userRepository.save(user);
-        String token =  jwtService.generateToken(user);
+        String token = jwtService.generateToken(user);
         return new AuthResponseDTO(token);
     }
 
-    public AuthResponseDTO login(LoginRequestDTO dto){
-        Authentication authenticate =  authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+    public AuthResponseDTO login(LoginRequestDTO dto) {
+        Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                 dto.username(),
                 dto.password()
         ));

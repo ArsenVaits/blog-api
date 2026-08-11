@@ -26,9 +26,8 @@ public class GlobalExceptionHandler {
     }
 
 
-
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, List<String>>> handeArgumentNotValidException(MethodArgumentNotValidException e){
+    public ResponseEntity<Map<String, List<String>>> handeArgumentNotValidException(MethodArgumentNotValidException e) {
         List<String> errors = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
@@ -39,13 +38,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(
             {BadCredentialsException.class,
-            UsernameNotFoundException.class})
-    public ResponseEntity<String> handleBadCredentials(RuntimeException e){
+                    UsernameNotFoundException.class})
+    public ResponseEntity<String> handleBadCredentials(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Неверный логин или пароль!");
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<String> handleUserAlreadyExists(UserAlreadyExistsException e){
+    public ResponseEntity<String> handleUserAlreadyExists(UserAlreadyExistsException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 

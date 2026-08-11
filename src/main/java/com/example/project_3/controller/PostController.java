@@ -23,17 +23,17 @@ public class PostController {
 
 
     @PostMapping
-    public ResponseEntity<PostResponseDTO> createPost(@Valid @RequestBody PostRequestDTO dto, @AuthenticationPrincipal User currentUser){
+    public ResponseEntity<PostResponseDTO> createPost(@Valid @RequestBody PostRequestDTO dto, @AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(postService.createPost(dto, currentUser));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<PostResponseDTO> updatePostById(@Valid @RequestBody PostUpdateDTO dto, @PathVariable Long id, @AuthenticationPrincipal User currentUser){
-        return ResponseEntity.ok(postService.updatePostById(dto,id,currentUser));
+    public ResponseEntity<PostResponseDTO> updatePostById(@Valid @RequestBody PostUpdateDTO dto, @PathVariable Long id, @AuthenticationPrincipal User currentUser) {
+        return ResponseEntity.ok(postService.updatePostById(dto, id, currentUser));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePostById(@PathVariable Long id, @AuthenticationPrincipal User currentUser){
+    public ResponseEntity<Void> deletePostById(@PathVariable Long id, @AuthenticationPrincipal User currentUser) {
         postService.deletePostById(id, currentUser);
         return ResponseEntity.noContent().build();
     }
@@ -45,13 +45,13 @@ public class PostController {
 
 
     @GetMapping("/by-tags/{tagId}")
-    public Page<PostResponseDTO> findPostsByTagId(@PathVariable Long tagId, Pageable pageable){
-        return postService.findPostsByTagId(tagId,pageable);
+    public Page<PostResponseDTO> findPostsByTagId(@PathVariable Long tagId, Pageable pageable) {
+        return postService.findPostsByTagId(tagId, pageable);
     }
 
 
     @GetMapping("/by-users/{userId}")
-    public Page<PostResponseDTO> findPostsByUserId(@PathVariable Long userId, Pageable pageable){
+    public Page<PostResponseDTO> findPostsByUserId(@PathVariable Long userId, Pageable pageable) {
         return postService.findPostsByUserId(userId, pageable);
     }
 

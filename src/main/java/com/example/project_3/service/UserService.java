@@ -22,30 +22,25 @@ public class UserService {
     private final UserMapper userMapper;
 
 
-
-
-    //Update
-    public UserResponseDTO updateUser(UserUpdateDTO dto, User currentUser){
+    public UserResponseDTO updateUser(UserUpdateDTO dto, User currentUser) {
         userMapper.update(dto, currentUser);
         return userMapper.toResponseDTO(userRepository.save(currentUser));
     }
 
-    // Delete
-    public void deleteCurrentUser(User currentUser){
+    public void deleteCurrentUser(User currentUser) {
         userRepository.delete(currentUser);
     }
 
 
-    //Read
     @Transactional(readOnly = true)
-    public Page<UserResponseDTO> getPageUser(Pageable pageable){
+    public Page<UserResponseDTO> getPageUser(Pageable pageable) {
         return userRepository.findAll(pageable)
                 .map(userMapper::toResponseDTO);
     }
 
 
     @Transactional(readOnly = true)
-    public List<UserResponseDTO> getListUser(){
+    public List<UserResponseDTO> getListUser() {
         return userRepository.findAll().stream()
                 .map(userMapper::toResponseDTO)
                 .toList();
@@ -53,7 +48,7 @@ public class UserService {
 
 
     @Transactional(readOnly = true)
-    public UserResponseDTO findUserById(Long id){
+    public UserResponseDTO findUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException("Пользователь с таким id не найден!"));
 

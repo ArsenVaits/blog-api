@@ -21,31 +21,31 @@ public class TagController {
     private final TagService tagService;
 
 
-
     @PostMapping
-    public TagResponseDTO createTag(@Valid @RequestBody TagRequestDTO dto){
+    public TagResponseDTO createTag(@Valid @RequestBody TagRequestDTO dto) {
         return tagService.createTag(dto);
     }
+
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTagById(@PathVariable Long id){
+    public ResponseEntity<Void> deleteTagById(@PathVariable Long id) {
         tagService.deleteTagById(id);
         return ResponseEntity.noContent().build();
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping("/{id}")
-    public TagResponseDTO updateTagById(@Valid @RequestBody TagUpdateDTO dto, @PathVariable Long id){
+    public TagResponseDTO updateTagById(@Valid @RequestBody TagUpdateDTO dto, @PathVariable Long id) {
         return tagService.updateTagById(dto, id);
     }
 
     @GetMapping("/{id}")
-    public TagResponseDTO findTagById(@PathVariable Long id){
+    public TagResponseDTO findTagById(@PathVariable Long id) {
         return tagService.findTagById(id);
     }
 
     @GetMapping("/by-posts/{postId}")
-    public Page<TagResponseDTO> getTagsByPostId(@PathVariable Long postId, Pageable pageable){
+    public Page<TagResponseDTO> getTagsByPostId(@PathVariable Long postId, Pageable pageable) {
         return tagService.getTagsByPostId(postId, pageable);
     }
 

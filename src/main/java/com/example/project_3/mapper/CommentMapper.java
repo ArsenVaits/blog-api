@@ -12,7 +12,9 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface CommentMapper {
     CommentResponseDTO toResponseDTO(Comment comment);
+
     Comment toEntity(CommentRequestDTO dto);
+
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void update(CommentUpdateDTO dto, @MappingTarget Comment comment);
 }

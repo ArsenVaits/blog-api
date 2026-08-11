@@ -24,7 +24,7 @@ public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http)throws Exception{
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
@@ -46,7 +46,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
@@ -54,6 +54,4 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
-
-
 }

@@ -12,6 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface TagMapper {
     TagResponseDTO toResponseDTO(Tag t);
+
     Tag toEntity(TagRequestDTO dto);
 
 

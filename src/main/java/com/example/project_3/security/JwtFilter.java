@@ -24,21 +24,16 @@ public class JwtFilter extends OncePerRequestFilter {
     private final UserDetailsService userDetailsService;
 
 
-
-
-
-
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
 
-
         String authHeader = request.getHeader("Authorization");
 
-        if(authHeader == null || !authHeader.startsWith("Bearer ")){
-            filterChain.doFilter(request,response);
+        if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -63,8 +58,7 @@ public class JwtFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        }
-        catch (JwtException | UserNotFoundException e){
+        } catch (JwtException | UserNotFoundException e) {
             SecurityContextHolder.clearContext();
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Невалидный токен!");
             return;

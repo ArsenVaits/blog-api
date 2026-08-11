@@ -16,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import org.springframework.security.access.AccessDeniedException;
 
 @Service
@@ -28,9 +27,7 @@ public class CommentService {
     private final PostRepository postRepository;
 
 
-
-    //Create
-    public CommentResponseDTO createComment(CommentRequestDTO dto, User currentUser, Long postId){
+    public CommentResponseDTO createComment(CommentRequestDTO dto, User currentUser, Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Пост с таким id не был найден"));
 
@@ -38,50 +35,44 @@ public class CommentService {
         Comment comment = commentMapper.toEntity(dto);
         comment.setUser(currentUser);
         comment.setPost(post);
-
         return commentMapper.toResponseDTO(commentRepository.save(comment));
     }
 
 
-    //Delete
-    public void deleteCommentById(Long id, User currentUser){
+    public void deleteCommentById(Long id, User currentUser) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Комментарий с таким id не найден!"));
-        if(!comment.getUser().getId().equals(currentUser.getId())){
+        if (!comment.getUser().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("Нет прав!");
         }
         commentRepository.delete(comment);
     }
 
 
-    //Update
-    public CommentResponseDTO updateCommentById(CommentUpdateDTO dto, Long id, User currentUser){
+    public CommentResponseDTO updateCommentById(CommentUpdateDTO dto, Long id, User currentUser) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Комментарий с таким id не найден!"));
-        if(!comment.getUser().getId().equals(currentUser.getId())){
+        if (!comment.getUser().getId().equals(currentUser.getId())) {
             throw new AccessDeniedException("Нет прав!");
         }
-        commentMapper.update(dto,comment);
+        commentMapper.update(dto, comment);
         return commentMapper.toResponseDTO(commentRepository.save(comment));
     }
 
-    //Read
+
     @Transactional(readOnly = true)
-    public CommentResponseDTO findCommentById(Long id){
+    public CommentResponseDTO findCommentById(Long id) {
         Comment comment = commentRepository.findById(id)
                 .orElseThrow(() -> new CommentNotFoundException("Комментарий с таким id не найден!"));
         return commentMapper.toResponseDTO(comment);
     }
 
+
     @Transactional(readOnly = true)
-    public Page<CommentResponseDTO> findCommentsByPostId(Long postId, Pageable pageable){
+    public Page<CommentResponseDTO> findCommentsByPostId(Long postId, Pageable pageable) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new PostNotFoundException("Пост с таким id не был найден!"));
         return commentRepository.findCommentsByPostId(postId, pageable)
                 .map(commentMapper::toResponseDTO);
     }
-
-
-
-
 }

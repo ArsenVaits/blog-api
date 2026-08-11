@@ -21,30 +21,30 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("/posts/{postId}")
-    public CommentResponseDTO createComment(@Valid @RequestBody CommentRequestDTO dto, @AuthenticationPrincipal User user, @PathVariable Long postId){
-        return commentService.createComment(dto,user,postId);
+    @PostMapping("/by-posts/{postId}")
+    public CommentResponseDTO createComment(@Valid @RequestBody CommentRequestDTO dto, @AuthenticationPrincipal User user, @PathVariable Long postId) {
+        return commentService.createComment(dto, user, postId);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @AuthenticationPrincipal User currentUser){
+    public ResponseEntity<Void> deleteCommentById(@PathVariable Long id, @AuthenticationPrincipal User currentUser) {
         commentService.deleteCommentById(id, currentUser);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}")
-    public CommentResponseDTO updateComment(@Valid @RequestBody CommentUpdateDTO dto, @PathVariable Long id, @AuthenticationPrincipal User currentUser){
+    public CommentResponseDTO updateComment(@Valid @RequestBody CommentUpdateDTO dto, @PathVariable Long id, @AuthenticationPrincipal User currentUser) {
         return commentService.updateCommentById(dto, id, currentUser);
     }
 
 
     @GetMapping("/{id}")
-    public CommentResponseDTO findCommentById(@PathVariable Long id){
+    public CommentResponseDTO findCommentById(@PathVariable Long id) {
         return commentService.findCommentById(id);
     }
 
     @GetMapping("/posts/{postId}")
-    public Page<CommentResponseDTO> findCommentsByPostId(@PathVariable Long postId, Pageable pageable){
+    public Page<CommentResponseDTO> findCommentsByPostId(@PathVariable Long postId, Pageable pageable) {
         return commentService.findCommentsByPostId(postId, pageable);
     }
 }

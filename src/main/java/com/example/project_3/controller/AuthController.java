@@ -1,7 +1,6 @@
 package com.example.project_3.controller;
 
 
-
 import com.example.project_3.dto.request.LoginRequestDTO;
 import com.example.project_3.dto.request.RegisterRequestDTO;
 import com.example.project_3.dto.response.AuthResponseDTO;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
     private final AuthService authService;
+
     @PostMapping("/login")
     public AuthResponseDTO login(@Valid @RequestBody LoginRequestDTO dto) {
         return authService.login(dto);

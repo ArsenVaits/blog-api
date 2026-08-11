@@ -12,9 +12,8 @@ import java.util.List;
 @Table(name = "Tag")
 @Setter
 @Getter
-public class Tag extends BaseEntity{
+public class Tag extends BaseEntity {
     private String name;
-
 
 
     @ManyToMany(mappedBy = "tagList")

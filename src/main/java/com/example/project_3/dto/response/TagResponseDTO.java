@@ -11,5 +11,4 @@ public class TagResponseDTO {
     private Long id;
     private String name;
 
-
 }

@@ -12,6 +12,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface PostMapper {
     PostResponseDTO toResponseDTO(Post p);
+
     Post toEntity(PostRequestDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)

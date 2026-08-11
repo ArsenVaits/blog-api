@@ -22,10 +22,9 @@ public class TagService {
     private final TagRepository tagRepository;
     private final TagMapper tagMapper;
 
-    //CREATE
 
-    public TagResponseDTO createTag(TagRequestDTO dto){
-        if(tagRepository.existsByName(dto.name())){
+    public TagResponseDTO createTag(TagRequestDTO dto) {
+        if (tagRepository.existsByName(dto.name())) {
             throw new TagAlreadyExistsException("Тег уже существует!");
         }
         Tag tag = tagRepository.save(tagMapper.toEntity(dto));
@@ -33,26 +32,22 @@ public class TagService {
     }
 
 
-    //DELETE
-
-    public void deleteTagById(Long id){
+    public void deleteTagById(Long id) {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("Тег с таким Id не был найден!"));
         tagRepository.delete(tag);
     }
 
-    //UPDATE
 
-    public TagResponseDTO updateTagById(TagUpdateDTO dto, Long id){
+    public TagResponseDTO updateTagById(TagUpdateDTO dto, Long id) {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("Тег с таким Id не был найден!"));
         tagMapper.update(dto, tag);
         return tagMapper.toResponseDTO(tagRepository.save(tag));
     }
 
-    //READ
     @Transactional(readOnly = true)
-    public TagResponseDTO findTagById(Long id){
+    public TagResponseDTO findTagById(Long id) {
         Tag tag = tagRepository.findById(id)
                 .orElseThrow(() -> new TagNotFoundException("Тег с таким Id не был найден!"));
         return tagMapper.toResponseDTO(tag);
@@ -60,7 +55,7 @@ public class TagService {
 
 
     @Transactional(readOnly = true)
-    public Page<TagResponseDTO> getTagsByPostId(Long postId, Pageable pageable){
+    public Page<TagResponseDTO> getTagsByPostId(Long postId, Pageable pageable) {
 
         return tagRepository.findTagsByPostListId(postId, pageable).map(tagMapper::toResponseDTO);
     }

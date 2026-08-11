@@ -28,7 +28,6 @@ public class PostService {
     private final TagRepository tagRepository;
 
 
-    //Create
     @Transactional
     public PostResponseDTO createPost(PostRequestDTO dto, User currentUser){
         Post post = postMapper.toEntity(dto);
@@ -40,7 +39,6 @@ public class PostService {
         return postMapper.toResponseDTO(postRepository.save(post));
     }
 
-    //update
     @Transactional
     public PostResponseDTO updatePostById(PostUpdateDTO dto, Long id, User currentUser){
         Post post = postRepository.findById(id)
@@ -54,7 +52,6 @@ public class PostService {
         return postMapper.toResponseDTO(postRepository.save(post));
     }
 
-    //Delete
     @Transactional
     public void deletePostById(Long id, User currentUser){
         Post post = postRepository.findById(id)
@@ -66,7 +63,6 @@ public class PostService {
 
     }
 
-    //Read
     public PostResponseDTO findPostById(Long id){
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new PostNotFoundException("Пост с таким id не был найден"));

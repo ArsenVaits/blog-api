@@ -24,36 +24,32 @@ public class UserController {
 
 
     @PatchMapping
-    public UserResponseDTO updateUser(@Valid @RequestBody UserUpdateDTO dto, @AuthenticationPrincipal User currentUser){
+    public UserResponseDTO updateUser(@Valid @RequestBody UserUpdateDTO dto, @AuthenticationPrincipal User currentUser) {
         return userService.updateUser(dto, currentUser);
     }
 
 
     @DeleteMapping
-    public ResponseEntity<Void> deleteUserById(@AuthenticationPrincipal User currentUser){
+    public ResponseEntity<Void> deleteUserById(@AuthenticationPrincipal User currentUser) {
         userService.deleteCurrentUser(currentUser);
         return ResponseEntity.noContent().build();
     }
 
 
     @GetMapping("/list")
-    public List<UserResponseDTO> getListUsers(){
+    public List<UserResponseDTO> getListUsers() {
         return userService.getListUser();
     }
 
     @GetMapping("/page")
-    public Page<UserResponseDTO> getPageUsers(Pageable pageable){
+    public Page<UserResponseDTO> getPageUsers(Pageable pageable) {
         return userService.getPageUser(pageable);
     }
 
     @GetMapping("/{id}")
-    public UserResponseDTO findUserById(@PathVariable Long id){
+    public UserResponseDTO findUserById(@PathVariable Long id) {
         return userService.findUserById(id);
     }
-
-
-
-
 
 
 }
