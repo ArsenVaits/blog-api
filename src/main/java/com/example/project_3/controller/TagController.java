@@ -26,14 +26,14 @@ public class TagController {
         return tagService.createTag(dto);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTagById(@PathVariable Long id) {
         tagService.deleteTagById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PatchMapping("/{id}")
     public TagResponseDTO updateTagById(@Valid @RequestBody TagUpdateDTO dto, @PathVariable Long id) {
         return tagService.updateTagById(dto, id);

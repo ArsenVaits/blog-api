@@ -1,5 +1,6 @@
 package com.example.project_3.entity;
 
+import com.example.project_3.enums.ROLE;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -7,6 +8,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
@@ -23,7 +25,7 @@ public class User extends BaseEntity implements UserDetails {
     private String email;
     @Column(name = "password", nullable = false, length = 60)
     private String password;
-
+    private ROLE role;
 
     @OneToMany(mappedBy = "user")
     private List<Post> postList;
@@ -32,9 +34,9 @@ public class User extends BaseEntity implements UserDetails {
     @OneToMany(mappedBy = "user")
     private List<Comment> commentList;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
-
 }
