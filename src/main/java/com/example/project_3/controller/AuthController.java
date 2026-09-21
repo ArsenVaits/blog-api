@@ -4,7 +4,7 @@ package com.example.project_3.controller;
 import com.example.project_3.dto.request.LoginRequestDTO;
 import com.example.project_3.dto.request.RegisterRequestDTO;
 import com.example.project_3.dto.response.AuthResponseDTO;
-import com.example.project_3.security.AuthService;
+import com.example.project_3.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
